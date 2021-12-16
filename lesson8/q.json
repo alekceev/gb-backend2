@@ -1,0 +1,10 @@
+{
+    "query": {
+        "wildcard": {
+            "name.keyword": {
+                "wildcard": "*nterprise",
+                "boost": 1.0
+            }
+        }
+    }
+}

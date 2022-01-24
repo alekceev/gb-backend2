@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: shortener
+spec:
+ replicas: 1
+ strategy:
+   type: RollingUpdate
+   rollingUpdate:
+     maxUnavailable: 1
+     maxSurge: 1
+ selector:
+   matchLabels:
+     app: shortener
+ template:
+   metadata:
+     labels:
+       app: shortener
+   spec:
+     containers:
+       - name: shortener
+         image: docker.io/alekseevdenis/shortener:latest
+         imagePullPolicy: Always
+         ports:
+           - containerPort: 8080
+         livenessProbe:
+           httpGet:
+             path: /__heartbeat__
+             port: 8080
+             scheme: HTTP
+           initialDelaySeconds: 5
+           periodSeconds: 15
+           timeoutSeconds: 5
+         readinessProbe:
+           httpGet:
+             path: /__heartbeat__
+             port: 8080
+             scheme: HTTP
+           initialDelaySeconds: 5
+           timeoutSeconds: 1
+
